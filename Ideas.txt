@@ -1,0 +1,46 @@
+GUI
+----
+- APP initialization
+
+- Menu - main menu
+			 - option screens
+
+- levels screen
+	-whatever gui components
+
+- interface drawables
+
+
+ENTITIES 
+--------
+- Enemies
+
+- player
+
+- map_tiles
+
+- active items
+
+- permanent items
+
+
+Use this to make a method "virtual"
+
+def method():
+	raise notImplementedError
+
+POSSIBLE PATTERNS
+------------------
+Adapter,
+decorator,
+composit
+bridge
+facade,
+observer,
+singleton,
+Interceptor,
+builder
+momento
+chain
+factory,
+abstract factory
