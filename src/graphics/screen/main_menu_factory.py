@@ -8,7 +8,7 @@ from screen_factory import ScreenFactory
 
 class MainMenuFactory(ScreenFactory):
     def __init__(self):
-        pass
+        super(MainMenuFactory, self).__init__()
 
     def create_screen(self):
         main_menu = MainMenu()
