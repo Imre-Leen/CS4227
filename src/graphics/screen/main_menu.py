@@ -1,7 +1,8 @@
 from src.graphics.button import Button
-from src.graphics.drawable_I import Drawable
+from screen import Screen
 
-class MainMenu(Drawable):
+
+class MainMenu(Screen):
     def __init__(self):
         # Create Menus with corresponding screens
         self.options = {
@@ -29,3 +30,6 @@ class MainMenu(Drawable):
                                 blue_val=0.0)
             new_button.draw(graphics)
             current_height += button_height
+
+    def update(self):
+        pass
