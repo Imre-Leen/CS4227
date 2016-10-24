@@ -1,14 +1,15 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
-from screen.main_menu import MainMenu
 
 
 class GraphicsApp(object):
-    def __init__(self, window_number, width, height):
+    def __init__(self, window_number, width, height, screen_factory, observer=None, title="Test"):
         self.window_number = window_number  # glut window number
         self.width = width
         self.height = height
-        self.screen_factory = MainMenu()
+        self.screen_factory = screen_factory
+        self.title = title
+        self.observer = observer
 
     def start(self):
         # initialization
@@ -16,11 +17,18 @@ class GraphicsApp(object):
         glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
         glutInitWindowSize(self.width, self.height)  # set window size
         glutInitWindowPosition(0, 0)  # set window position
-        window = glutCreateWindow("WOo HOoo")  # create window with title'
+        window = glutCreateWindow(self.title)  # create window with title'
 
-        glutDisplayFunc(self.draw)  # set draw function callback
-        glutIdleFunc(self.draw)  # draw all the time
+        glutDisplayFunc(self.runner)  # set runner function callback
+        glutIdleFunc(self.runner)  # run method all the time
+        glutKeyboardUpFunc(self.key_released)
+        glutMouseFunc(self.mouse_click)
+        glutSetKeyRepeat(1)
         glutMainLoop()
+
+    def runner(self):
+        self.screen_factory.update()
+        self.draw()
 
     def draw(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)  # clear the screen
@@ -29,4 +37,27 @@ class GraphicsApp(object):
         self.screen_factory.draw(self)
 
         glutSwapBuffers()  # important for double buffering
+
+    def key_pressed(self, *args):
+        information_list = []  # information passed to the observers
+        for arg in args:
+            information_list.append(arg)
+        information_list[0] = "keydown" + str(information_list[0])
+        self.observer.notify(args)
+
+    def key_released(self, *args):
+        information_list = []  # information passed to the observers
+        for arg in args:
+            information_list.append(arg)
+        information_list[0] = "keyup" + str(information_list[0])
+        self.observer.notify(args)
+
+    def mouse_click(self, *args):
+        information_list = []  # information passed to the observers
+        for arg in args:
+            information_list.append(arg)
+        information_list[0] = "mouse" + str(information_list[0]) + str(information_list[1])
+        self.observer.notify(information_list)
+
+
 
