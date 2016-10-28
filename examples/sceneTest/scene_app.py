@@ -11,24 +11,17 @@ from src.scene_manager.controller.controller import Controller
 from src.scene_manager.scene_manager import SceneManager
 from src.scene_manager.command.keyCommands import *
 from src.scene_manager.controller.input_observer import InputObserver
+from src.map_generator.map_generator import Generator
 from random import randint
 
-x = 0
-y = 0
-map = []
-while x < 480:
-    while y < 480:
-        if randint(1, 100) > 98:
-            map.append(MapTile(0.2, 0.0, 0.0, x, y, 20, 20, False))
-        else:
-            map.append(MapTile(0.0, 0.6, 0.0, x, y, 20, 20, True))
-        y += 20
-    x += 20
-    y = 0
 
+map_generator = Generator()
+map_generator.gen_level()
+
+temp_map = map_generator.gen_tiles_level()
 player_controller = Controller()
 
-test_player = MapTile(1.0, 1.0, 0.0, 30, 50, 10, 10, False)
+test_player = MapTile(1.0, 1.0, 0.0, 30, 50, 5, 5, False)
 test_player_b = MapTile(1.0, 0.0, 0.5, 380, 350, 10, 10, False)
 
 player_controller.add_command(MoveUpCommand(test_player, "w"))
@@ -37,7 +30,7 @@ player_controller.add_command(MoveLeftCommand(test_player, "a"))
 player_controller.add_command(MoveRightCommand(test_player, "d"))
 player_controller.add_command(MouseRightClickCommand(test_player, RIGHT_CLICK))
 player_controller.add_command(MouseLeftClickCommand(test_player, LEFT_CLICK))
-scene_manager = SceneManager(map)
+scene_manager = SceneManager(temp_map)
 graphics_app = GraphicsApp(1, 480, 480, GameScreen(scene_manager), InputObserver())
 scene_manager.add_object_to_scene(test_player)
 scene_manager.add_object_to_scene(test_player_b)
