@@ -5,6 +5,8 @@ class MouseLeftClickCommand(Command):
     def __init__(self, player, button):
         self.player = player
         self.button = button
+        self.x = 0
+        self.y = 0
 
     def execute(self):
         self.player.x_pos = self.x - 5
