@@ -14,6 +14,10 @@ from src.scene_manager.controller.input_observer import InputObserver
 from src.map_generator.map_generator import Generator
 from random import randint
 
+from src.entities.player_factory import PlayerFactory
+from src.entities.item_factory import ItemFactory
+from src.entities.enemy_factory import EnemyFactory
+
 
 map_generator = Generator()
 map_generator.gen_level()
@@ -21,18 +25,30 @@ map_generator.gen_level()
 temp_map = map_generator.gen_tiles_level()
 player_controller = Controller()
 
-test_player = MapTile(1.0, 1.0, 0.0, 30, 50, 5, 5, False)
-test_player_b = MapTile(1.0, 0.0, 0.5, 380, 350, 10, 10, False)
+#test_player = MapTile(1.0, 1.0, 0.0, 30, 50, 5, 5, False)
+player_fact = PlayerFactory()
+enemy_fact = EnemyFactory()
+item_fact = ItemFactory()
 
-player_controller.add_command(MoveUpCommand(test_player, "w"))
-player_controller.add_command(MoveDownCommand(test_player, "s"))
-player_controller.add_command(MoveLeftCommand(test_player, "a"))
-player_controller.add_command(MoveRightCommand(test_player, "d"))
-player_controller.add_command(MouseRightClickCommand(test_player, RIGHT_CLICK))
-player_controller.add_command(MouseLeftClickCommand(test_player, LEFT_CLICK))
+player = player_fact.create_player()
+
+normal_enemy = enemy_fact.create_enemy("normal")
+boss_enemy = enemy_fact.create_enemy("boss")
+
+health = item_fact.create_item("health")
+gold = item_fact.create_item("gold")
+
+#test_player_b = MapTile(1.0, 0.0, 0.5, 380, 350, 10, 10, False)
+
+player_controller.add_command(MoveUpCommand(player, "w"))
+player_controller.add_command(MoveDownCommand(player, "s"))
+player_controller.add_command(MoveLeftCommand(player, "a"))
+player_controller.add_command(MoveRightCommand(player, "d"))
+player_controller.add_command(MouseRightClickCommand(player, RIGHT_CLICK))
+player_controller.add_command(MouseLeftClickCommand(player, LEFT_CLICK))
 scene_manager = SceneManager(temp_map)
 graphics_app = GraphicsApp(1, 480, 480, GameScreen(scene_manager), InputObserver())
-scene_manager.add_object_to_scene(test_player)
-scene_manager.add_object_to_scene(test_player_b)
+scene_manager.add_object_to_scene(player)
+scene_manager.add_object_to_scene(normal_enemy)
 graphics_app.observer.attach_observer(player_controller)
 graphics_app.start()
