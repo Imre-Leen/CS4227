@@ -1,4 +1,4 @@
-from src.graphics.drawable_I import DrawableRectangle
+from src.graphics.drawable_rectangle import DrawableRectangle
 
 class EnemyTile(DrawableRectangle):
     def __init__(self, red_val, green_val, blue_val, x_pos, y_pos, width, height):
