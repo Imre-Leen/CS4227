@@ -8,8 +8,10 @@ class ItemFactory(EntityFactory):
     def create_item(self, item_type):
 
         if item_type == "health":
-            return ItemTile(1.0, 0.0, 0.5, 0.5, 255, 0, 0)
+            return ItemTile(1.0, 1.0, 1.0, 0.5, 255, 4, 4)
         elif item_type == "gold":
-            return ItemTile(1.0, 0.0, 0.5, 0.5, 218, 165, 32)
+            return ItemTile(0.7, 0.7, 0.0, 240, 280, 4, 3)
+        elif item_type == "stairs":
+            return ItemTile(0.5, 0.2, 0.2, 240, 280, 5, 5)
         else:
             return None

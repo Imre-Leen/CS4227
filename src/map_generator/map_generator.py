@@ -202,11 +202,14 @@ class Generator():
 
     def gen_level(self):
 
-        # build an empty dungeon, blank the room and corridor lists
-        for i in range(self.height):
-            self.level.append(['stone'] * self.width)
+        # build an empty dungeon, blank all generated lists
+        self.level = []
+        self.tiles_level = []
         self.room_list = []
         self.corridor_list = []
+
+        for i in range(self.height):
+            self.level.append(['stone'] * self.width)
 
         max_iters = self.max_rooms * 5
 
