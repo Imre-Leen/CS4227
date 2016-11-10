@@ -1,3 +1,7 @@
+from interceptor import event_manager
+from interceptor.dispatcher import Dispatcher
+
+
 class SceneManager:
     def __init__(self, tilemap=[], entities=[]):
         self.tilemap = tilemap
@@ -5,6 +9,7 @@ class SceneManager:
         self.old_entities_x = [entities.__len__()]
         self.old_entities_y = [entities.__len__()]
         self.update_old_positions()
+        self.create_dispatchers()
 
     def update(self):
         for entity in self.entities:
@@ -43,3 +48,10 @@ class SceneManager:
         entity_a.height + entity_a.y_pos > entity_b.y_pos):
             return True
         return False
+
+    def create_dispatchers(self):
+        event_manager.scene_manager = self
+        dispatcher_1 = Dispatcher(event_types=["keyboard",])
+        dispatcher_2 = Dispatcher(event_types=["mouse"])
+        event_manager.register(dispatcher_1, "keyboard_events_dispatcher")
+        event_manager.register(dispatcher_2, "mouse_events_dispatcher")

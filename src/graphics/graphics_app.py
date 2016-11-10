@@ -1,6 +1,8 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 
+from src.scene_manager.interceptor.event_manager import report_event
+from src.scene_manager.interceptor.event import Event
 
 class GraphicsApp(object):
     def __init__(self, window_number, width, height, screen_factory, observer=None, title="Test"):
@@ -50,6 +52,7 @@ class GraphicsApp(object):
         for arg in args:
             information_list.append(arg)
         information_list[0] = "keyup" + str(information_list[0])
+        report_event(Event(information_list, "keyboard"))
         self.observer.notify(args)
 
     def mouse_click(self, *args):
@@ -57,6 +60,7 @@ class GraphicsApp(object):
         for arg in args:
             information_list.append(arg)
         information_list[0] = "mouse" + str(information_list[0]) + str(information_list[1])
+        report_event(Event(information_list, "mouse"))
         self.observer.notify(information_list)
 
 

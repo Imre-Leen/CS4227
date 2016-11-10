@@ -8,7 +8,7 @@ class MainMenu(Screen):
         self.options = {
             "play game": 1,
             "Load Game": 2,
-            "Exit": 3
+            "Exit": 3,
         }
 
     def draw(self, graphics):
