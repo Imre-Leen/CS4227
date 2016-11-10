@@ -1,22 +1,26 @@
-class EventManager:
-    instance = None
-    dispatcher_list = []
-    observers_list = []
+"""
+Groups of functions in a module for all intents and purposes act like singletons in python
+"""
+from context import Context
 
-    @staticmethod
-    def get_instance(self):
-        if self.instance is None:
-            self.instance = EventManager()
-            return self.instance
-        else:
-            return self.instance
+instance = None
+scene_manager = None
+dispatchers = {}
 
-    def report_event(self, event):
-        for observer in self.observers_list:
-            observer.notify(event)
 
-    def register(self, observer):
-        self.observers_list.append(observer)
+def report_event(event):
+    new_context = Context(scene_manager, event)
+    for name, dispatcher in dispatchers.iteritems():
+        if dispatcher.event_present(event.type):
+            print name
+            dispatcher.notify(new_context)
 
-    def unregister(self, observer):
-        self.observers_list.remove(observer)
+
+def register(dispatcher, name):
+    dispatchers.update({
+        name: dispatcher
+    })
+
+
+def unregister(name):
+    dispatchers.pop(name, None)

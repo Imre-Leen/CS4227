@@ -1,5 +1,5 @@
 class Event:
 
-    def __init__(self, data):
+    def __init__(self, data, type):
         self.data = data
-        
+        self.type = type

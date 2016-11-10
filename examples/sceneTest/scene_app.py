@@ -11,12 +11,15 @@ from src.scene_manager.controller.controller import Controller
 from src.scene_manager.scene_manager import SceneManager
 from src.scene_manager.command.keyCommands import *
 from src.scene_manager.controller.input_observer import InputObserver
+from src.scene_manager.interceptor import event_manager
 from src.map_generator.map_generator import Generator
 from random import randint
 
 from src.entities.player_factory import PlayerFactory
 from src.entities.item_factory import ItemFactory
 from src.entities.enemy_factory import EnemyFactory
+
+from logging_interceptor import LoggingInterceptor
 
 
 map_generator = Generator()
@@ -48,6 +51,15 @@ player_controller.add_command(MouseRightClickCommand(player, RIGHT_CLICK))
 player_controller.add_command(MouseLeftClickCommand(player, LEFT_CLICK))
 scene_manager = SceneManager(temp_map)
 graphics_app = GraphicsApp(1, 480, 480, GameScreen(scene_manager), InputObserver())
+
+#Logging
+logging_interceptor = LoggingInterceptor()
+event_manager.dispatchers["keyboard_events_dispatcher"].register(logging_interceptor)
+
+for name, dispatcher in event_manager.dispatchers.iteritems():
+    print name
+    print dispatcher.observers_list
+
 scene_manager.add_object_to_scene(player)
 scene_manager.add_object_to_scene(normal_enemy)
 graphics_app.observer.attach_observer(player_controller)
