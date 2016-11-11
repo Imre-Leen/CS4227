@@ -7,5 +7,5 @@ class MoveDownCommand(Command):
         self.button = button
 
     def execute(self):
-        self.player.y_pos -= 5
+        self.player.y_pos -= 3
 

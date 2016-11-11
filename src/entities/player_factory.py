@@ -6,5 +6,5 @@ class PlayerFactory(EntityFactory):
         super(EntityFactory, self).__init__()
 
     def create_player(self):
-        player = PlayerTile(1.0, 1.0, 0.0, 30, 50, 5, 5)
+        player = PlayerTile(0.1, 0.8, 0.0, 30, 50, 5, 5)
         return player

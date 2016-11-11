@@ -7,4 +7,4 @@ class MoveLeftCommand(Command):
         self.button = button
 
     def execute(self):
-        self.player.x_pos -= 5
+        self.player.x_pos -= 3

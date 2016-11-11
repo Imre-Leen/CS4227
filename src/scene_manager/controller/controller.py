@@ -3,7 +3,6 @@ class Controller:
         self.button_command_list = command_list
 
     def update(self, button):
-        print button
         for button_command in self.button_command_list:
             if button_command.button == button[0]:
                 if button[0].find("mouse") != -1:
