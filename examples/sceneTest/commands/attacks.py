@@ -23,11 +23,7 @@ class Attacks():
             self.damageTile.x_pos = entity.x_pos + entity.width / 2
             self.damageTile.y_pos = entity.y_pos + entity.height / 2 + 8
 
-        elif entity.phase == 5:
-            entity.attacking = False
-            self.phase = 0
-            return self.damageTile
-
         else:
             entity.attacking = False
-            self.phase = 0
+            entity.phase = 0
+            return self.damageTile

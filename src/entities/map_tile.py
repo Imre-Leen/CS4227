@@ -1,4 +1,3 @@
-from OpenGL.GL import *
 from src.graphics.drawable_rectangle import DrawableRectangle
 
 
