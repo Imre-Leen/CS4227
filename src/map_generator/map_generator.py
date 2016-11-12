@@ -323,7 +323,6 @@ class Generator():
                 x = col_num * tile_width
                 y = row_num * tile_height
 
-                print self.tiles
                 if col == 'stone':
                     red_val, green_val, blue_val = self.tiles["inaccessible"]
                     tile = MapTile(red_val, green_val, blue_val, x, y, tile_width, tile_height, False)

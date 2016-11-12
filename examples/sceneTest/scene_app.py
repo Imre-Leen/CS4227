@@ -43,7 +43,7 @@ item_fact = ItemFactory()
 player = player_fact.create_player()
 player.x_pos = 100
 player.y_pos = 150
-player.health = randint(3, 10)
+player.health = randint(3, 100)
 player.gold = 0
 player.do_attack = attack_functions.short_range_attack
 
@@ -58,7 +58,8 @@ player_controller.add_command(MouseLeftClickCommand(player, LEFT_CLICK))
 player_controller.add_command(AttackCommand(player, "i"))
 
 scene_manager = SceneManager(map_generator)
-graphics_app = GraphicsApp(1, 480, 480, GameScreen(scene_manager), InputObserver(), )
+graphics_app = GraphicsApp(1, 480, 480, GameScreen(scene_manager), InputObserver(),
+                           title="Example_game_1")
 
 item_list = []
 i = 0
@@ -99,7 +100,7 @@ graphics_app.observer.attach_observer(player_controller)
 
 #Logging
 logging_interceptor = LoggingInterceptor()
-event_manager.dispatchers["keyboard_events_dispatcher"].register(logging_interceptor)
+event_manager.dispatchers["keyboard_events_dispatcher"].attach_observer(logging_interceptor)
 
 for name, dispatcher in event_manager.dispatchers.iteritems():
     print name

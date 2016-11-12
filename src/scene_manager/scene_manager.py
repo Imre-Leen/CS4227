@@ -2,6 +2,8 @@ from interceptor import event_manager
 from interceptor.dispatcher import Dispatcher
 from random import randint
 
+from src.time_logger import measure_execution_time
+
 
 class SceneManager:
     def __init__(self, map_generator, default_items=[]):
@@ -27,6 +29,7 @@ class SceneManager:
             self.check_collision(entity)
         self.update_old_positions()
 
+    @measure_execution_time
     def next_level(self, entity):
         self.tilemap = []
         self.map_generator.gen_level()

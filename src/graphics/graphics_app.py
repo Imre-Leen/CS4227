@@ -1,5 +1,4 @@
-from OpenGL.GL import *
-from OpenGL.GLUT import *
+from graphics_facade import *
 
 from src.scene_manager.interceptor.event_manager import report_event
 from src.scene_manager.interceptor.event import Event
@@ -15,11 +14,7 @@ class GraphicsApp(object):
 
     def start(self):
         # initialization
-        glutInit()  # initialize glut
-        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
-        glutInitWindowSize(self.width, self.height)  # set window size
-        glutInitWindowPosition(0, 0)  # set window position
-        window = glutCreateWindow(self.title)  # create window with title'
+        create_window(self.width, self.height, self.title)
 
         glutDisplayFunc(self.runner)  # set runner function callback
         glutIdleFunc(self.runner)  # run method all the time

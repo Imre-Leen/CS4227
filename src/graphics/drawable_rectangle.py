@@ -1,4 +1,4 @@
-from OpenGL.GL import *
+from graphics_facade import *
 from drawable_I import Drawable
 
 
@@ -20,5 +20,5 @@ class DrawableRectangle(Drawable):
         self.blue_val = blue_val
 
     def draw(self, graphics):
-        glColor3f(self.red_val, self.green_val, self.blue_val)
-        glRectf(self.x_pos, self.y_pos, self.x_pos+self.width, self.y_pos+self.height)
+        draw_rectangle(self.x_pos, self.y_pos, self.width, self.height, self.red_val,
+                       self.green_val, self.blue_val)
