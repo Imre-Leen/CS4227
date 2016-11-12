@@ -7,6 +7,8 @@ from commands.mouse_right_click import MouseRightClickCommand
 from commands.attack_command import AttackCommand
 from commands.attacks import Attacks
 from third_party_functions.pickup import ThirdPartyPickup
+from enemy_states.idle_state import IdleState
+from enemy_states.attack_state import AttackState
 
 from src.graphics.graphics_app import GraphicsApp
 from src.graphics.screen.game_screen import GameScreen
@@ -39,7 +41,6 @@ player.health = randint(3, 10)
 player.gold = 0
 player.do_attack = attack_functions.short_range_attack
 
-normal_enemy = enemy_fact.create_enemy("normal")
 boss_enemy = enemy_fact.create_enemy("boss")
 
 player_controller.add_command(MoveUpCommand(player, "w"))
@@ -78,6 +79,15 @@ stairs.pick_up = scene_manager.next_level
 item_list.append(stairs)
 
 item_list.append(player)
+i=0
+while i < 6:
+    normal_enemy = enemy_fact.create_enemy("normal")
+    normal_enemy.idle_state = IdleState(normal_enemy)
+    normal_enemy.attack_state = AttackState(normal_enemy)
+    normal_enemy.state = normal_enemy.idle_state
+    item_list.append(normal_enemy)
+    i += 1
+
 scene_manager.set_default_items(item_list)
 graphics_app.observer.attach_observer(player_controller)
 

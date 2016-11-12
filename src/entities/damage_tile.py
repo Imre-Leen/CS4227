@@ -6,9 +6,9 @@ class DamageTile(DrawableRectangle):
         super(DamageTile, self).__init__(x_pos, y_pos, width, height, red_val, green_val, blue_val)
         self.damage = damage
 
-    def update(self):
+    def update(self, context):
         return None
 
     def on_entity_collision(self, entity):
         entity.health = entity.health - self.damage
-        return False
+        return True
