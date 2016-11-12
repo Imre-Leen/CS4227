@@ -21,13 +21,18 @@
 #http://www.roguebasin.com/index.php?title=A_Simple_Dungeon_Generator_for_Python_2_or_3
 
 from src.entities.map_tile import MapTile
+from map_strategies.sequential_map_strategy import SequentialMapStrategy
+from desert_factory import DesertFactory
+from dungeon_factory import DungeonFactory
+from forest_factory import ForestFactory
 import random
 
 
 class Generator():
     def __init__(self, width=48, height=48, max_rooms=10, min_room_xy=5,
                  max_room_xy=10, rooms_overlap=False, random_connections=1,
-                 random_spurs=3, tiles=None, graphic_width=480, graphic_height=480):
+                 random_spurs=3, tiles=None, graphic_width=480, graphic_height=480,
+                 map_strategy=None):
         self.width = width
         self.height = height
         self.max_rooms = max_rooms
@@ -42,13 +47,24 @@ class Generator():
         self.tiles_level = []
         self.graphic_width = graphic_width
         self.graphic_height = graphic_height
+        if map_strategy is None:
+            map_strategy = SequentialMapStrategy(map_list=[DesertFactory(),
+                                                           DungeonFactory(),
+                                                           ForestFactory()])
+        self.map_strategy = map_strategy
 
         if tiles is None:
             self.tiles = {
-                'stone': MapTile(0.2, 0.8, 0.8, 0, 0, 1, 1, False),
-                'floor': MapTile(0.2, 0.2, 0.2, 0, 0, 1, 1, True),
-                'wall': MapTile(0.2, 0.3, 0.0, 0, 0, 1, 1, False)
+                'inaccessible': (0.2, 0.8, 0.8),
+                'floor': (0.2, 0.2, 0.2),
+                'wall':  (0.2, 0.3, 0.0)
             }
+
+    def get_level_tiles(self):
+        current_level_map_factory = self.map_strategy.choose_map_factory()
+        self.tiles["inaccessible"] = current_level_map_factory.get_inaccessible_tile_data()
+        self.tiles["floor"] = current_level_map_factory.get_floor_tile_data()
+        self.tiles["wall"] = current_level_map_factory.get_wall_tile_data()
 
     def gen_room(self):
         x, y, w, h = 0, 0, 0, 0
@@ -203,6 +219,7 @@ class Generator():
     def gen_level(self):
 
         # build an empty dungeon, blank all generated lists
+        self.get_level_tiles()
         self.level = []
         self.tiles_level = []
         self.room_list = []
@@ -301,21 +318,23 @@ class Generator():
         tile_width = self.graphic_width/float(self.width)
         tile_height = self.graphic_height/float(self.height)
 
-        print tile_height
-        print tile_width
         for row_num, row in enumerate(self.level):
             for col_num, col in enumerate(row):
                 x = col_num * tile_width
                 y = row_num * tile_height
-                print x, y
+
+                print self.tiles
                 if col == 'stone':
-                    tile = MapTile(0.2, 0.2, 0.8, x, y, tile_width, tile_height, False)
+                    red_val, green_val, blue_val = self.tiles["inaccessible"]
+                    tile = MapTile(red_val, green_val, blue_val, x, y, tile_width, tile_height, False)
                     self.tiles_level.append(tile)
                 if col == 'floor':
-                    tile = MapTile(0.4, 0.4, 0.4, x, y, tile_width, tile_height, True)
+                    red_val, green_val, blue_val = self.tiles["floor"]
+                    tile = MapTile(red_val, green_val, blue_val, x, y, tile_width, tile_height, True)
                     self.tiles_level.append(tile)
                 if col == 'wall':
-                    tile = MapTile(0.2, 0.2, 0.2, x, y, tile_width, tile_height, False)
+                    red_val, green_val, blue_val = self.tiles["wall"]
+                    tile = MapTile(red_val, green_val, blue_val, x, y, tile_width, tile_height, False)
                     self.tiles_level.append(tile)
 
         return self.tiles_level

@@ -18,6 +18,10 @@ from src.scene_manager.command.keyCommands import *
 from src.scene_manager.controller.input_observer import InputObserver
 from src.scene_manager.interceptor import event_manager
 from src.map_generator.map_generator import Generator
+from src.map_generator.map_strategies.weighted_map_strategy import WeightedMapStrategy
+from src.map_generator.desert_factory import DesertFactory
+from src.map_generator.dungeon_factory import DungeonFactory
+from src.map_generator.forest_factory import ForestFactory
 from random import randint
 
 from src.entities.player_factory import PlayerFactory
@@ -26,7 +30,9 @@ from src.entities.enemy_factory import EnemyFactory
 
 from logging_interceptor import LoggingInterceptor
 
-map_generator = Generator()
+weighted_map_list = [(DungeonFactory(), 50), (DesertFactory(), 25), (ForestFactory(), 25)]
+weighted_map_strategy = WeightedMapStrategy(weighted_map_list)
+map_generator = Generator(map_strategy=weighted_map_strategy)
 player_controller = Controller()
 pickup_functions = ThirdPartyPickup()
 attack_functions = Attacks()
