@@ -10,20 +10,20 @@ class SceneManager:
         self.tilemap = self.map_generator.gen_tiles_level()
         self.default_items = default_items
         self.entities = []
+        self.old_entities_x = []
+        self.old_entities_y = []
         self.spawn_default_items()
-        self.old_entities_x = [self.entities.__len__()]
-        self.old_entities_y = [self.entities.__len__()]
         self.update_old_positions()
         self.create_dispatchers()
 
     def update(self):
         for entity in self.entities:
-            result = entity.update()
+            result = entity.update(self)
             if result is not None:
                 if entity.phase == 1:
-                    self.entities.append(result)
+                    self.add_entity_to_scene(result)
                 else:
-                    self.entities.remove(result)
+                    self.remove_entity_from_scene(result)
             self.check_collision(entity)
         self.update_old_positions()
 
@@ -32,6 +32,8 @@ class SceneManager:
         self.map_generator.gen_level()
         self.tilemap = self.map_generator.gen_tiles_level()
         self.entities = []
+        self.old_entities_x = []
+        self.old_entities_y = []
         self.spawn_default_items()
         return True
 
@@ -42,21 +44,29 @@ class SceneManager:
             self.old_entities_y[index] = entity.y_pos
 
     def add_entity_to_scene(self, entity):
+        self.entities.append(entity)
+        self.old_entities_x.append(entity.x_pos)
+        self.old_entities_y.append(entity.y_pos)
+
+    def remove_entity_from_scene(self, entity):
+        index = self.entities.index(entity)
+        del self.old_entities_x[index]
+        del self.old_entities_y[index]
+        self.entities.remove(entity)
+
+    def randomize_position(self, entity):
         entity.x_pos = randint(0, 480)
         entity.y_pos = randint(0, 480)
         while not self.inside_border(entity):
             entity.x_pos = randint(0, 480)
             entity.y_pos = randint(0, 480)
-        self.entities.append(entity)
-        self.old_entities_x.append(entity.x_pos)
-        self.old_entities_y.append(entity.y_pos)
 
     def check_collision(self, current_entity):
         index = self.entities.index(current_entity)
         for entity in self.entities:
             if current_entity is not entity and self.inside_entity(current_entity, entity):
                 if not current_entity.on_entity_collision(entity):
-                    self.entities.remove(current_entity)
+                    self.remove_entity_from_scene(current_entity)
                 continue
 
         if not self.inside_border(current_entity):
@@ -80,7 +90,7 @@ class SceneManager:
 
     def inside_border(self, current_entity):
         for tile in self.tilemap:
-            if tile.is_walkable == False and self.inside_entity(current_entity, tile):
+            if not tile.is_walkable and self.inside_entity(current_entity, tile):
                 return False
         return True
 
@@ -90,4 +100,5 @@ class SceneManager:
 
     def spawn_default_items(self):
         for item in self.default_items:
+            self.randomize_position(item)
             self.add_entity_to_scene(item)
