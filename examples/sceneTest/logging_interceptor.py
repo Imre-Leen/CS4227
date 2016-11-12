@@ -1,7 +1,7 @@
-from src.scene_manager.interceptor.interceptor_I import InterceptorI
+from src.scene_manager.interceptor.interceptor_I import Interceptor
 
 
-class LoggingInterceptor(InterceptorI):
+class LoggingInterceptor(Interceptor):
 
     def update(self, context):
         # log some data

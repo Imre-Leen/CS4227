@@ -1,4 +1,0 @@
-LEFT_CLICK = "mouse00"
-LEFT_RELEASE = "mouse01"
-RIGHT_CLICK = "mouse20"
-RIGHT_RELEASE = "mouse21"

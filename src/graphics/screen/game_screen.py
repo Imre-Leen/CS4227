@@ -1,4 +1,4 @@
-from screen import Screen
+from screen_I import Screen
 
 
 class GameScreen(Screen):

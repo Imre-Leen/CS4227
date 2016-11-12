@@ -14,7 +14,6 @@ from src.graphics.graphics_app import GraphicsApp
 from src.graphics.screen.game_screen import GameScreen
 from src.scene_manager.controller.controller import Controller
 from src.scene_manager.scene_manager import SceneManager
-from src.scene_manager.command.keyCommands import *
 from src.scene_manager.controller.input_observer import InputObserver
 from src.scene_manager.interceptor import event_manager
 from src.map_generator.map_generator import Generator
@@ -30,6 +29,10 @@ from src.entities.enemy_factory import EnemyFactory
 
 from logging_interceptor import LoggingInterceptor
 
+LEFT_CLICK = "mouse00"
+LEFT_RELEASE = "mouse01"
+RIGHT_CLICK = "mouse20"
+RIGHT_RELEASE = "mouse21"
 weighted_map_list = [(DungeonFactory(), 50), (DesertFactory(), 25), (ForestFactory(), 25)]
 weighted_map_strategy = WeightedMapStrategy(weighted_map_list)
 map_generator = Generator(map_strategy=weighted_map_strategy)

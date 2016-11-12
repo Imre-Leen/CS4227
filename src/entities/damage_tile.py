@@ -10,5 +10,6 @@ class DamageTile(DrawableRectangle):
         return None
 
     def on_entity_collision(self, entity):
-        entity.health = entity.health - self.damage
+        if hasattr(entity, "health"):
+            entity.health = entity.health - self.damage
         return True

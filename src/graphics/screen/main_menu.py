@@ -1,5 +1,5 @@
 from src.graphics.button import Button
-from screen import Screen
+from screen_I import Screen
 
 
 class MainMenu(Screen):
