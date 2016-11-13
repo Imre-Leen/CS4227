@@ -7,9 +7,7 @@ class State(object):
         raise NotImplementedError
 
     def do_attack(self, context):
-        """
+        raise NotImplementedError
 
-        :param context:
-        :return:
-        """
+    def do_cleanup(self):
         raise NotImplementedError

@@ -14,3 +14,6 @@ class DefaultState(State):
 
     def move(self, context):
         return None
+
+    def do_cleanup(self):
+        return None

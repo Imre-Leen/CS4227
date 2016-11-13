@@ -15,19 +15,16 @@ class SceneManager:
         self.old_entities_x = []
         self.old_entities_y = []
         self.spawn_default_items()
-        self.update_old_positions()
+        for entity in self.entities:
+            self.update_old_position(entity)
         self.create_dispatchers()
 
     def update(self):
         for entity in self.entities:
-            result = entity.update(self)
-            if result is not None:
-                if entity.phase == 1:
-                    self.add_entity_to_scene(result)
-                else:
-                    self.remove_entity_from_scene(result)
+            entity.update(self)
+        for entity in self.entities:
             self.check_collision(entity)
-        self.update_old_positions()
+            self.update_old_position(entity)
 
     @measure_execution_time
     def next_level(self, entity):
@@ -40,22 +37,24 @@ class SceneManager:
         self.spawn_default_items()
         return True
 
-    def update_old_positions(self):
-        for entity in self.entities:
+    def update_old_position(self, entity):
+        if entity in self.entities:
             index = self.entities.index(entity)
             self.old_entities_x[index] = entity.x_pos
             self.old_entities_y[index] = entity.y_pos
 
-    def add_entity_to_scene(self, entity):
-        self.entities.append(entity)
-        self.old_entities_x.append(entity.x_pos)
-        self.old_entities_y.append(entity.y_pos)
+    def add(self, entity):
+        if entity is not None:
+            self.entities.append(entity)
+            self.old_entities_x.append(entity.x_pos)
+            self.old_entities_y.append(entity.y_pos)
 
-    def remove_entity_from_scene(self, entity):
-        index = self.entities.index(entity)
-        del self.old_entities_x[index]
-        del self.old_entities_y[index]
-        self.entities.remove(entity)
+    def remove(self, entity):
+        if entity in self.entities:
+            index = self.entities.index(entity)
+            del self.old_entities_x[index]
+            del self.old_entities_y[index]
+            self.entities.remove(entity)
 
     def randomize_position(self, entity):
         entity.x_pos = randint(0, 480)
@@ -69,7 +68,7 @@ class SceneManager:
         for entity in self.entities:
             if current_entity is not entity and self.inside_entity(current_entity, entity):
                 if not current_entity.on_entity_collision(entity):
-                    self.remove_entity_from_scene(current_entity)
+                    self.remove(current_entity)
                 continue
 
         if not self.inside_border(current_entity):
@@ -104,4 +103,4 @@ class SceneManager:
     def spawn_default_items(self):
         for item in self.default_items:
             self.randomize_position(item)
-            self.add_entity_to_scene(item)
+            self.add(item)
