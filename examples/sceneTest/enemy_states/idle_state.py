@@ -26,7 +26,7 @@ class IdleState(State):
         self.entity.y_pos += self.y
 
     def do_cleanup(self):
-        self.entity.attack_state.do_clean()
+        self.entity.attack_state.do_cleanup()
 
     def distance_check(self, entity_a, entity_b):
         x_dist = entity_a.x_pos - entity_b.x_pos
