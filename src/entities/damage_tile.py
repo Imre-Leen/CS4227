@@ -5,9 +5,12 @@ class DamageTile(DrawableRectangle):
     def __init__(self, red_val, green_val, blue_val, x_pos, y_pos, width, height, damage):
         super(DamageTile, self).__init__(x_pos, y_pos, width, height, red_val, green_val, blue_val)
         self.damage = damage
+        self.phase = 1
 
     def update(self, context):
-        return None
+        if self.phase == 0:
+            context.remove(self)
+        self.phase += 1
 
     def on_entity_collision(self, entity):
         if hasattr(entity, "health"):

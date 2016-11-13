@@ -12,7 +12,6 @@ class IdleState(State):
     def change_state(self, context):
         for player in context.entities:
             if type(player) is PlayerTile and self.distance_check(self.entity, player) < 40:
-                print "I'm coming for you"
                 self.entity.state = self.entity.attack_state
 
     def do_attack(self, entity):
@@ -25,6 +24,9 @@ class IdleState(State):
 
         self.entity.x_pos += self.x
         self.entity.y_pos += self.y
+
+    def do_cleanup(self):
+        self.entity.attack_state.do_clean()
 
     def distance_check(self, entity_a, entity_b):
         x_dist = entity_a.x_pos - entity_b.x_pos

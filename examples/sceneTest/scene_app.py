@@ -109,5 +109,4 @@ for name, dispatcher in event_manager.dispatchers.iteritems():
     print name
     print dispatcher.observers_list
 
-graphics_app.observer.attach_observer(player_controller)
 graphics_app.start()

@@ -31,6 +31,9 @@ class AttackState(State):
                 else:
                     self.entity.attacking = True
 
+    def do_cleanup(self):
+        self.attack.damageTile.phase = 0
+
     def direction(self, number):
         if number > 0:
             return 1
